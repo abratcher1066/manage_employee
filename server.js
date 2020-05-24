@@ -23,7 +23,6 @@ connection.connect(function(err) {
     if (err) throw err;
     console.log("connected to employee database as id " + connection.threadId + "\n");
     welcomeMenu();
-    // add code to begin function
 });
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MAIN MENU
@@ -166,6 +165,26 @@ function goToUpdateMenu() {
 function quitProgram() {
     // code for quitting app and disconnecting
 }
+
+function returnToMenu(){
+    //when user is done viewing a table
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'Returntomainmenu',
+            message: 'When you are finished viewing you may return to the main menu.',
+            choices: [
+                'Return to main menu'
+            ]
+        }]).then(userChoice => {
+        switch (userChoice.returntomainmenu) {
+            case 'Return to main menu' : welcomeMenu();
+        }
+    });
+}
+
+
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //          Sub-Menu Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -187,6 +206,7 @@ function viewEmployees() {
    (error, res) => {
         console.table(res);
    });
+   returnToMenu();
 } 
 
 // ~~~~~~~~~~~~~~~~
@@ -200,7 +220,7 @@ function viewDepartments() {
 function viewRoles() {
     connection.query('SELECT * FROM position',
     (error, res) => {
-        // console.table code
+        console.table(res);
     });
 };
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -239,7 +259,7 @@ function addNewEmployee() {
             message: "Please enter employee's LAST name:"
         },
         {
-            name: 'position_id',
+            name: 'role_id',
             type: 'input',
             message: "| ('1' - Engineer || '2' - Technician || '3' - Operative ) |  Please enter employee's ROLE ID#:",
             // validate: validJobId
@@ -258,12 +278,12 @@ function addNewEmployee() {
             {
                 first_name: data.first_name,
                 last_name: data.last_name,
-                position_id: data.position_id,
-                manager_id: data.managerId
+                role_id: data.role_id,
+                manager_id: data.manager_id
             },
             function(err, res) {
                 if (err) throw err;
-                console.log('New employee' + data.first_name + " " + data.last_name + "has been added to the system.");
+                console.log('New employee ' + data.first_name + " " + data.last_name + " has been added to the system.");
                 console.log("You will now be returned to the main menu.")
                 onStartup = false;
                 welcomeMenu();
@@ -284,11 +304,11 @@ function addNewDepartment() {
         connection.query(
             'INSERT INTO department SET ?',
             {
-                name: data.department
+                department: data.department
             },
             function(err, res) {
                 if (err) throw err;
-                console.log('New department:' + ' "'+ data.department +'" ' + 'has been added to the system.');
+                console.log('New department: ' + ' "'+ data.department +'" ' + ' has been added to the system.');
                 console.log("You will now be returned to the main menu.")
                 onStartup = false;
                 welcomeMenu();
@@ -309,17 +329,23 @@ function addNewRole() {
             name: 'salary',
             type: 'input',
             message: " (WARNING: INCLUDE CENTS BUT NOT THE DECIMAL POINT -- Format ex. $50,000.00 = '5000000' ; $122,375.62 = '12237562' ) Please enter a starting salary for the new role:"
-        },        
+        },
+        {
+            name: 'role_id',
+            type: 'input',
+            message: "Please enter the department ID# that this new role will belong to:"
+        },    
     ]).then (data => {
         connection.query(
             'INSERT INTO position SET ?',
             {
                 title: data.title,
-                salary: data.salary
+                salary: data.salary,
+                role_id: data.role_id
             },
             function(err, res) {
                 if (err) throw err;
-                console.log('New role:' + ' "'+ data.title +'" ' + 'has been added to the system.');
+                console.log('New role: ' + ' "'+ data.title +'" ' + ' has been added to the system.');
                 console.log("You will now be returned to the main menu.")
                 onStartup = false;
                 welcomeMenu();
