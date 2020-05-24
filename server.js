@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const fs = require('fs');
 const axios = require("axios");
 const path = require("path");
+const consoletable = require("console.table");
 
 // MySQL Database connection info
 const connection = mysql.createConnection({
@@ -24,6 +25,8 @@ connection.connect(function(err) {
     welcomeMenu();
     // add code to begin function
 });
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// MAIN MENU
 
 function welcomeMenu() {
     if(onStartup==true) {console.log("Welcome to the RobCo employee database system.");
@@ -44,7 +47,7 @@ function welcomeMenu() {
 
     ]).then(userChoice => {
         switch (userChoice.main_menu) {
-            case 'VIEW the database': viewDatabase();
+            case 'VIEW the database': goToViewDatabaseMenu();
                 break;
             case 'ADD a new employee, job role, or department' : goToAddMenu();
                 break;
@@ -55,7 +58,7 @@ function welcomeMenu() {
     });
     }
 }
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 // Planned menu pathing:
 // VIEW --> 
 //  +View everything
@@ -72,22 +75,53 @@ function welcomeMenu() {
 //  +Update employee role
 //  +Update employee manager
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// SUB-MENU NAVIGATION
 
-
-
-
-function viewDatabase() {
-    // code for viewing the database
+function goToViewDatabaseMenu() {
+    // use (console.table) in this code
+    // menu options:
+        // view everything 
+        // view employees
+        // view roles
+        // view departments
 }
 
 function goToAddMenu() {
-
+    // menu options:   
+        //  +Add new employee
+        //  +Add new role
+        //  +Add new department
 }
 
 function goToUpdateMenu() {
-
+    // menu options:
+        //  +Update employee role
+        //  +Update employee manager
 }
 
 function quitProgram() {
+    // code for quitting app and disconnecting
+}
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//          Sub-Menu Functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// VIEW MENU
+viewEverything() {
 
 }
+// ~~~~~~~~~~~~~~~~
+viewEmployees() {
+    
+}
+// ~~~~~~~~~~~~~~~~
+viewDepartments() {
+
+}
+// ~~~~~~~~~~~~~~~~
+viewRoles() {
+
+}
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ADD MENU
