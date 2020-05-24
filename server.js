@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
     port: 3306,
     user: "root",
     password: "12345",
-    database: "dbschema"
+    database: "employee_db"
 })
 
 // Welcome message
@@ -50,7 +50,7 @@ function welcomeMenu() {
         switch (userChoice.main_menu) {
             case 'VIEW the database': goToViewDatabaseMenu();
                 break;
-            case 'ADD a new employee, job role, or department' : goToAddMenu();
+            case 'ADD a new employee, job, or department' : goToAddMenu();
                 break;
             case 'UPDATE an existing employee or manager' : goToUpdateMenu();
                 break;
@@ -178,14 +178,14 @@ function quitProgram() {
 function viewEverything() {
     connection.query('SELECT * FROM employee_db',
     (error, res) => {
-        // code for console.table (not even sure i can select the whole db but we'll find out)
+        console.table(res);
     })
 };
 // ~~~~~~~~~~~~~~~~
 function viewEmployees() {
    connection.query('SELECT * FROM employee',
    (error, res) => {
-       // code for console.table --- should be console.table(res);
+        console.table(res);
    });
 } 
 
@@ -193,7 +193,7 @@ function viewEmployees() {
 function viewDepartments() {
     connection.query('SELECT * FROM department',
     (error, res) => {
-        // console.table code
+        console.table(res);
     });
 };
 // ~~~~~~~~~~~~~~~~
@@ -201,7 +201,7 @@ function viewRoles() {
     connection.query('SELECT * FROM position',
     (error, res) => {
         // console.table code
-    })
+    });
 };
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -210,40 +210,42 @@ function viewRoles() {
 //  +Add new employee
 //  +Add new role
 //  +Add new department
-const validJobId(answer) {
-    var isnum = /^\d$/.test(answer);
-    if(isNaN(answer)){
-        return "Please enter a number."
-    }
-    if(isnum === false){
-      return "Please enter a single number, 1-3."
-    }
-    if(answer == "") {
-      return "Please enter at least one character."
-    }
-    return true;
-}
+
+// COMMENTING OUT for now to get app up and running
+// const validJobId(answer) {
+//     var isnum = /^\d$/.test(answer);
+//     if(isNaN(answer)){
+//         return "Please enter a number."
+//     }
+//     if(isnum === false){
+//       return "Please enter a single number, 1-3."
+//     }
+//     if(answer == "") {
+//       return "Please enter at least one character."
+//     }
+//     return true;
+// }
 
 function addNewEmployee() {
     inquirer.prompt([
         {
-            name: 'first_name'
+            name: 'first_name',
             type: 'input',
             message: "Please enter employee's FIRST name:"
         },
         {
-            name: 'last_name'
+            name: 'last_name',
             type: 'input',
             message: "Please enter employee's LAST name:"
         },
         {
-            name: 'position_id'
+            name: 'position_id',
             type: 'input',
-            message: "| ('1' - Engineer || '2' - Technician || '3' - Operative ) |  Please enter employee's ROLE ID#:"
-            validate: validJobId
+            message: "| ('1' - Engineer || '2' - Technician || '3' - Operative ) |  Please enter employee's ROLE ID#:",
+            // validate: validJobId
         },
         {
-            name: 'manager_id'
+            name: 'manager_id',
             type: 'input',
             message: "Please enter the MANAGER ID# of this employee's manager:"
             // validate: validManagerId --- code to summon up existing managers and make sure # is a valid choice
@@ -273,7 +275,7 @@ function addNewEmployee() {
 function addNewDepartment() {
     inquirer.prompt([
         {
-            name: 'department'
+            name: 'department',
             type: 'input',
             message: "Please enter a name for the new department:"
             // validate: code to check if dept. already exists
@@ -298,13 +300,13 @@ function addNewDepartment() {
 function addNewRole() {
     inquirer.prompt([
         {
-            name: 'title'
+            name: 'title',
             type: 'input',
             message: "Please enter a title for the new position/role:"
             // validate: code to check if position already exists
         },
         {
-            name: 'salary'
+            name: 'salary',
             type: 'input',
             message: " (WARNING: INCLUDE CENTS BUT NOT THE DECIMAL POINT -- Format ex. $50,000.00 = '5000000' ; $122,375.62 = '12237562' ) Please enter a starting salary for the new role:"
         },        

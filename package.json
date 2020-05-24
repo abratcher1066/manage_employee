@@ -14,8 +14,10 @@
   "author": "Andrew Bratcher",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
     "console.table": "^0.10.0",
     "inquirer": "^7.1.0",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "path": "^0.12.7"
   }
 }
