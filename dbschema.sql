@@ -29,7 +29,7 @@ CREATE TABLE department (
 );
 
 -- creating table: role
-CREATE TABLE role ( 
+CREATE TABLE position ( 
     --id, role's title, role's salary, #id of department where role works, set primary key
     id INTEGER NOT NULL AUTO_INCREMENT,
     title VARCHAR(30),
@@ -40,7 +40,7 @@ CREATE TABLE role (
 
 -- creating table: employee
 CREATE TABLE employee (
-    --id, first name, last name, role id# of employee (what their job is), id# of employee's manager, set primary key
+    --id, first name, last name, role id# of employee (what their job is), id# of employee's manager, set primary
     id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(30),
     last_name VARCHAR(30),

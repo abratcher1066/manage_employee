@@ -29,8 +29,9 @@ connection.connect(function(err) {
 // MAIN MENU
 
 function welcomeMenu() {
-    if(onStartup==true) {console.log("Welcome to the RobCo employee database system.");
-    console.log("Remember that stopping corporate espionage is **everyone's** responsibility.");
+    if(onStartup==true) {
+        console.log("Welcome to the RobCo employee database system. Remember that stopping corporate espionage is **everyone's** responsibility.");
+        }
     console.log("Loading main menu... Please wait...")
     inquirer.prompt([
         {
@@ -56,8 +57,8 @@ function welcomeMenu() {
             case 'EXIT the database' : quitProgram();
         }
     });
-    }
 }
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 // Planned menu pathing:
 // VIEW --> 
@@ -67,9 +68,9 @@ function welcomeMenu() {
 //  +View departments
 
 // ADD -->
-//  +Add new employee
-//  +Add new role
-//  +Add new department
+//  (done!) +Add new employee
+//  (done!) +Add new role
+//  (done!) +Add new department
 
 // UPDATE -->
 //  +Update employee role
@@ -122,11 +123,11 @@ function viewEmployees() {
 // ~~~~~~~~~~~~~~~~
 function viewDepartments() {
 
-}
+};
 // ~~~~~~~~~~~~~~~~
 function viewRoles() {
 
-}
+};
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ADD MENU
@@ -145,6 +146,7 @@ const validJobId(answer) {
     if(answer == "") {
       return "Please enter at least one character."
     }
+    return true;
 }
 
 function addNewEmployee() {
@@ -160,13 +162,18 @@ function addNewEmployee() {
             message: "Please enter employee's LAST name:"
         },
         {
-            name: 'first_name'
+            name: 'position_id'
             type: 'input',
-            message: "| ('1' - Engineer || '2' - Technician || '3' - Operative ) |  Please enter employee's JOB ID#:"
+            message: "| ('1' - Engineer || '2' - Technician || '3' - Operative ) |  Please enter employee's ROLE ID#:"
             validate: validJobId
         },
         {
-            name: 'first_name'
+            name: 'manager_id'
+            type: 'input',
+            message: "Please enter the MANAGER ID# of this employee's manager:"
+            // validate: validManagerId --- code to summon up existing managers and make sure # is a valid choice
+            // with more time, program would check manager and role #s and display them back to the user
+            // so the user wouldn't have to remember manager ids, get better confirmation msgs, etc. etc. 
         }
     ]).then (data => {
         connection.query(
@@ -174,33 +181,78 @@ function addNewEmployee() {
             {
                 first_name: data.first_name,
                 last_name: data.last_name,
-                employee
+                position_id: data.position_id,
+                manager_id: data.managerId
             },
-        )
-    })
+            function(err, res) {
+                if (err) throw err;
+                console.log('New employee' + data.first_name + " " + data.last_name + "has been added to the system.");
+                console.log("You will now be returned to the main menu.")
+                onStartup = false;
+                welcomeMenu();
+            }
+        );
+    });
 }
 
+function addNewDepartment() {
+    inquirer.prompt([
+        {
+            name: 'department'
+            type: 'input',
+            message: "Please enter a name for the new department:"
+            // validate: code to check if dept. already exists
+        }
+    ]).then (data => {
+        connection.query(
+            'INSERT INTO department SET ?',
+            {
+                name: data.department
+            },
+            function(err, res) {
+                if (err) throw err;
+                console.log('New department:' + ' "'+ data.department +'" ' + 'has been added to the system.');
+                console.log("You will now be returned to the main menu.")
+                onStartup = false;
+                welcomeMenu();
+            }
+        );
+    });
+}
 
-
+function addNewRole() {
+    inquirer.prompt([
+        {
+            name: 'title'
+            type: 'input',
+            message: "Please enter a title for the new position/role:"
+            // validate: code to check if position already exists
+        },
+        {
+            name: 'salary'
+            type: 'input',
+            message: " (WARNING: INCLUDE CENTS BUT NOT THE DECIMAL POINT -- Format ex. $50,000.00 = '5000000' ; $122,375.62 = '12237562' ) Please enter a starting salary for the new role:"
+        },        
+    ]).then (data => {
+        connection.query(
+            'INSERT INTO position SET ?',
+            {
+                title: data.title,
+                salary: data.salary
+            },
+            function(err, res) {
+                if (err) throw err;
+                console.log('New role:' + ' "'+ data.title +'" ' + 'has been added to the system.');
+                console.log("You will now be returned to the main menu.")
+                onStartup = false;
+                welcomeMenu();
+            }
+        );
+    });
+}
 
 
 // ~~~~~~~~~~
-// CODE FOR POSTING EMPLOYEE USING ENTERED DATA:
-// TBD
-// example below
-function createProduct(newProduct) {
-    console.log("Inserting a new product...\n");
-    const query = connection.query(
-
-        "INSERT INTO products SET ?",
-        newProduct, // the object that that the wildcard represents.
-        function(err, res){
-            if (err) throw err;
-            console.log(res.affectedRows + " product inserted!\n");
-            //Call updateProduct AFTER the INSERT completes
-            updateProduct(); // normally you wouldn't call an update function right after you do an insert, that's just for this exercise 
-        }
-}
 // ~~~~~~~~~~
 
 
