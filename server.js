@@ -62,10 +62,10 @@ function welcomeMenu() {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 // Planned menu pathing:
 // VIEW --> 
-//  +View everything
-//  +View employees
-//  +View roles
-//  +View departments
+//  +(done!) View everything
+//  +(done!) View employees
+//  +(done!) View roles
+//  +(done!) View departments
 
 // ADD -->
 //  (done!) +Add new employee
@@ -114,19 +114,32 @@ function quitProgram() {
 //  +View roles
 //  +View departments
 function viewEverything() {
-
+    connection.query('SELECT * FROM employee_db',
+    (error, res) => {
+        // code for console.table (not even sure i can select the whole db but we'll find out)
+    })
 };
 // ~~~~~~~~~~~~~~~~
 function viewEmployees() {
-    
-};
+   connection.query('SELECT * FROM employee',
+   (error, res) => {
+       // code for console.table --- should be console.table(res);
+   });
+} 
+
 // ~~~~~~~~~~~~~~~~
 function viewDepartments() {
-
+    connection.query('SELECT * FROM department',
+    (error, res) => {
+        // console.table code
+    });
 };
 // ~~~~~~~~~~~~~~~~
 function viewRoles() {
-
+    connection.query('SELECT * FROM position',
+    (error, res) => {
+        // console.table code
+    })
 };
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
