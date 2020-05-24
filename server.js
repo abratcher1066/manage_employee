@@ -80,26 +80,88 @@ function welcomeMenu() {
 // SUB-MENU NAVIGATION
 
 function goToViewDatabaseMenu() {
-    // use (console.table) in this code
-    // menu options:
-        // view everything 
-        // view employees
-        // view roles
-        // view departments
+    console.log("Welcome to the View Database menu.")
+    inquirer.prompt([
+            {
+                type: 'list',
+                name: 'view_menu',
+                message: "Please select an option below:",
+                choices: [
+                    'View employees', 
+                    'View roles', 
+                    'View departments', 
+                    'Show me everything',
+                    'Go back to previous menu'
+                ]
+            }
+    
+        ]).then(userChoice => {
+            switch (userChoice.view_menu) {
+                case 'View employees': viewEmployees();
+                    break;
+                case 'View roles' : viewRoles();
+                    break;
+                case 'View departments' : viewDepartments();
+                    break;
+                case 'Show me everything' : viewEverything();
+                    break;
+                case 'Go back to previous menu' : welcomeMenu();
+            }
+        });
 }
 
 function goToAddMenu() {
-    // menu options:   
-        //  +Add new employee
-        //  +Add new role
-        //  +Add new department
+    console.log("Welcome to the Add New menu.")
+    inquirer.prompt([
+            {
+                type: 'list',
+                name: 'add_menu',
+                message: "Please select an option below:",
+                choices: [
+                    'Add new employee', 
+                    'Add new position/role', 
+                    'Add new department', 
+                    'Go back to previous menu'
+                ]
+            }
+    
+        ]).then(userChoice => {
+            switch (userChoice.add_menu) {
+                case 'Add new employee': addNewEmployee();
+                    break;
+                case 'Add new position/role' : addNewRole();
+                    break;
+                case 'Add new department' : addNewDepartment();
+                    break;
+                case 'Go back to previous menu' : welcomeMenu();
+            }
+        });
 }
 
 function goToUpdateMenu() {
-    // menu options:
-        //  +Update employee role
-        //  +Update employee manager
-}
+        console.log("Welcome to the Update menu.")
+        inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'update_menu',
+                    message: "Please select an option below:",
+                    choices: [
+                        'Update employee role', 
+                        'Update employee manager', 
+                        'Go back to previous menu'
+                    ]
+                }
+        
+            ]).then(userChoice => {
+                switch (userChoice.update_menu) {
+                    case 'Update employee role' : updateEmployeeRole();
+                        break;
+                    case 'Update employee manager' : updateEmployeeManager();
+                        break;
+                    case 'Go back to previous menu' : welcomeMenu();
+                }
+            });
+    }
 
 function quitProgram() {
     // code for quitting app and disconnecting
