@@ -107,21 +107,113 @@ function quitProgram() {
 //          Sub-Menu Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // VIEW MENU
-viewEverything() {
+// VIEW --> 
+//  +View everything
+//  +View employees
+//  +View roles
+//  +View departments
+function viewEverything() {
 
-}
+};
 // ~~~~~~~~~~~~~~~~
-viewEmployees() {
+function viewEmployees() {
     
-}
+};
 // ~~~~~~~~~~~~~~~~
-viewDepartments() {
+function viewDepartments() {
 
 }
 // ~~~~~~~~~~~~~~~~
-viewRoles() {
+function viewRoles() {
 
 }
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ADD MENU
+// ADD -->
+//  +Add new employee
+//  +Add new role
+//  +Add new department
+const validJobId(answer) {
+    var isnum = /^\d$/.test(answer);
+    if(isNaN(answer)){
+        return "Please enter a number."
+    }
+    if(isnum === false){
+      return "Please enter a single number, 1-3."
+    }
+    if(answer == "") {
+      return "Please enter at least one character."
+    }
+}
+
+function addNewEmployee() {
+    inquirer.prompt([
+        {
+            name: 'first_name'
+            type: 'input',
+            message: "Please enter employee's FIRST name:"
+        },
+        {
+            name: 'last_name'
+            type: 'input',
+            message: "Please enter employee's LAST name:"
+        },
+        {
+            name: 'first_name'
+            type: 'input',
+            message: "| ('1' - Engineer || '2' - Technician || '3' - Operative ) |  Please enter employee's JOB ID#:"
+            validate: validJobId
+        },
+        {
+            name: 'first_name'
+        }
+    ]).then (data => {
+        connection.query(
+            'INSERT INTO employee SET ?',
+            {
+                first_name: data.first_name,
+                last_name: data.last_name,
+                employee
+            },
+        )
+    })
+}
+
+
+
+
+
+// ~~~~~~~~~~
+// CODE FOR POSTING EMPLOYEE USING ENTERED DATA:
+// TBD
+// example below
+function createProduct(newProduct) {
+    console.log("Inserting a new product...\n");
+    const query = connection.query(
+
+        "INSERT INTO products SET ?",
+        newProduct, // the object that that the wildcard represents.
+        function(err, res){
+            if (err) throw err;
+            console.log(res.affectedRows + " product inserted!\n");
+            //Call updateProduct AFTER the INSERT completes
+            updateProduct(); // normally you wouldn't call an update function right after you do an insert, that's just for this exercise 
+        }
+}
+// ~~~~~~~~~~
+
+
+
+
+
+
+
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// UPDATE MENU
+// UPDATE -->
+//  +Update employee role
+//  +Update employee manager
